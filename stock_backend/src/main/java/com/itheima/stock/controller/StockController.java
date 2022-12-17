@@ -1,6 +1,8 @@
 package com.itheima.stock.controller;
 
 import com.itheima.stock.common.domain.InnerMarketDomain;
+import com.itheima.stock.common.domain.Stock4EvrDayDomain;
+import com.itheima.stock.common.domain.Stock4MinuteDomain;
 import com.itheima.stock.common.domain.StockUpdownDomain;
 import com.itheima.stock.pojo.StockBlockRtInfo;
 import com.itheima.stock.pojo.StockBusiness;
@@ -8,9 +10,7 @@ import com.itheima.stock.service.StockService;
 import com.itheima.stock.vo.resp.PageResult;
 import com.itheima.stock.vo.resp.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -90,6 +90,61 @@ public class StockController {
     @GetMapping("/stock/export")
     public void stockExport(HttpServletResponse resp,Integer page,Integer pageSize){
         stockService.stockExport(resp,page,pageSize);
+    }
+
+    /**
+     * 统计国内大盘A股T日和T-1日成交量对比功能
+     * 如果当前时间点不股票交易日内,则将距离当前最近的一个时间点作为T日时间查询
+     * @return
+     */
+    @GetMapping("/stock/tradevol")
+    public R<Map> getStockTradeCol4Comparison(){
+        return stockService.getSockTradeCol4Comparison();
+    }
+
+    /**
+     * 统计在当前时间下（精确到分钟），股票在各个涨跌区间的数量
+     * 如果当前时间点不股票交易日内,则将距离当前最近的一个时间点作为查询时间点时间查询
+     * map结构
+     {
+     *     "code": 1,
+     *     "data": {
+     *         "time": "2021-12-31 14:58:00",
+     *         "infos": [
+     *             {
+     *                 "count": 17,
+     *                 "title": "-3~0%"
+     *             },
+     *             //...
+     *             ]
+     *     }
+     * @return
+     */
+    @GetMapping("/stock/updown")
+    public R<Map> getsStockUpDownRegion(){
+        return stockService.getsStockUpDownRegion();
+    }
+
+
+    /**
+     * 查询个股的分时行情数据，也就是统计指定股票T日每分钟的交易数据
+     * @param stockCode 股票代码
+     * @return
+     */
+    @GetMapping("/stock/screen/time-sharing")
+    public R<List<Stock4MinuteDomain>> stockScreenTimeSharing(@RequestParam("code") String stockCode){
+        return stockService.stockScreenTimeSharing(stockCode);
+    }
+
+    /**
+     * 个股日K数据查询 ，可以根据时间区间查询数日的K线数据
+     * 		默认查询历史20天的数据；
+     * @param code 股票代码
+     * @return
+     */
+    @GetMapping("/stock/screen/dkline")
+    public R<List<Stock4EvrDayDomain>> stockScreenDkLine(String code){
+        return stockService.stockScreenDkLine(code);
     }
 }
 

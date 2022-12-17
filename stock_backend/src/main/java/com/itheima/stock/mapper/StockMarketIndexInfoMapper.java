@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author 寂笙
@@ -36,4 +37,13 @@ public interface StockMarketIndexInfoMapper {
      * @return
      */
     List<InnerMarketDomain> getMarketInfo(@Param("marketIds") List<String> marketIds,@Param("timePoint") Date timePoint);
+
+    /**
+     * 根据时间范围和大盘id查询每分钟的交易量
+     * @param marketIds
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<Map> getStockTradeVol(@Param("marketIds") List<String> marketIds, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }
