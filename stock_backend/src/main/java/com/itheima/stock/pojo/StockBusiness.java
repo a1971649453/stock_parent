@@ -2,13 +2,20 @@ package com.itheima.stock.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 主营业务表
  * @TableName stock_business
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StockBusiness implements Serializable {
     /**
      *  股票编码

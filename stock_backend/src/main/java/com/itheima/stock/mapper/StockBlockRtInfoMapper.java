@@ -27,4 +27,6 @@ public interface StockBlockRtInfoMapper {
     int updateByPrimaryKey(StockBlockRtInfo record);
 
     List<StockBlockRtInfo> sectorAllLimit();
+
+    void insertBatch(List<StockBlockRtInfo> list);
 }

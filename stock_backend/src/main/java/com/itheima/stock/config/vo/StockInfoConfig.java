@@ -1,6 +1,9 @@
 package com.itheima.stock.config.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
@@ -27,4 +30,14 @@ public class StockInfoConfig {
      * 定义股票涨幅区间顺序
      */
     private List<String> upDownRange;
+
+    /**
+     * 大盘参数Url地址
+     */
+    private String marketUrl;
+
+    /**
+     * 板块Url地址
+     */
+    private String blockUrl;
 }

@@ -101,4 +101,9 @@ public interface StockRtInfoMapper {
      */
     List<Stock4EvrDayDomain> getStockCreenDkLineData(@Param("code") String code, @Param("dates") List<Date> dates);
 
+    /**
+     * 批量插入股票实时详情信息
+     * @param stockRtInfo 股票详情集合
+     */
+    void insertBatch(@Param("stockRtInfos") List<StockRtInfo> stockRtInfo);
 }

@@ -5,6 +5,7 @@ import com.itheima.stock.pojo.StockMarketIndexInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,4 +47,10 @@ public interface StockMarketIndexInfoMapper {
      * @return
      */
     List<Map> getStockTradeVol(@Param("marketIds") List<String> marketIds, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    /**
+     * 批量保存大盘数据
+     * @param list
+     */
+    void insertBatch(@Param("stockMarketInfoList") List<StockMarketIndexInfo> list);
 }
