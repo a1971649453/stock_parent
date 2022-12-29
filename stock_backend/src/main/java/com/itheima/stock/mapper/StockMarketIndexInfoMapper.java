@@ -1,6 +1,7 @@
 package com.itheima.stock.mapper;
 
 import com.itheima.stock.common.domain.InnerMarketDomain;
+import com.itheima.stock.common.domain.OutMarketDomain;
 import com.itheima.stock.pojo.StockMarketIndexInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,4 +54,12 @@ public interface StockMarketIndexInfoMapper {
      * @param list
      */
     void insertBatch(@Param("stockMarketInfoList") List<StockMarketIndexInfo> list);
+
+    /**
+     * 查询国外大盘信息
+     * @param outers
+     * @param lastDate
+     * @return
+     */
+    List<OutMarketDomain> getNewOutMarketLimit(@Param("outers") List<String> outers, @Param("lastDate") Date lastDate);
 }

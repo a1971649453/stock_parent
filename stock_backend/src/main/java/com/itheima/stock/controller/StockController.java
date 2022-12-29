@@ -1,9 +1,6 @@
 package com.itheima.stock.controller;
 
-import com.itheima.stock.common.domain.InnerMarketDomain;
-import com.itheima.stock.common.domain.Stock4EvrDayDomain;
-import com.itheima.stock.common.domain.Stock4MinuteDomain;
-import com.itheima.stock.common.domain.StockUpdownDomain;
+import com.itheima.stock.common.domain.*;
 import com.itheima.stock.pojo.StockBlockRtInfo;
 import com.itheima.stock.pojo.StockBusiness;
 import com.itheima.stock.service.StockService;
@@ -145,6 +142,65 @@ public class StockController {
     @GetMapping("/stock/screen/dkline")
     public R<List<Stock4EvrDayDomain>> stockScreenDkLine(String code){
         return stockService.stockScreenDkLine(code);
+    }
+
+    /**
+     * 个股周K数据查询 ，可以根据时间区间查询数日的K线数据
+     * @param code 股票代码
+     * @return
+     */
+    @GetMapping("/stock/screen/weekkline")
+    public R<List<Stock4EvrWeekDomain>> stockScreenWeekLine(String code){
+        return stockService.stockScreenWeekLine(code);
+    }
+
+    /**
+     * 查询国外大盘详情数据,根据时间和大盘点数降序排序取前2
+     * @return
+     */
+    @GetMapping("/external/index")
+    public R<List<OutMarketDomain>> getNewOutMarketLimit(){
+        return stockService.getNewOutMarketLimit();
+    }
+
+    /**
+     * 模糊查询，返回证券代码和证券名称
+     * @param searchStr
+     * @return
+     */
+    @GetMapping("/stock/search")
+    public R<List<Map>> getSuggestStock(String searchStr){
+        return stockService.getSuggestStock(searchStr);
+    }
+
+    /**
+     * 根据股票代码查询股票描述
+     * @param code
+     * @return
+     */
+    @GetMapping("/stock/describe")
+    public R<Stock4DescriptionDomain> getStockDescription(String code){
+        return stockService.getStockDescription(code);
+    }
+
+    /**
+     * 获取个股最新分时行情数据，主要包含：
+     * 开盘价、前收盘价、最新价、最高价、最低价、成交金额和成交量、交易时间信息
+     * @param code
+     * @return
+     */
+    @GetMapping("/stock/screen/second/detail")
+    public R<Stock4HourDetailsDomain> getStockHourDetails(String code){
+        return stockService.getStockHourDetails(code);
+    }
+
+    /**
+     * 查询个股交易流水 最新10条
+     * @return
+     */
+    @GetMapping("/stock/screen/second")
+    public R<List<Map>> getStockNewFlow(){
+        return stockService.getStockNewFlow();
     }
 }
 

@@ -26,11 +26,11 @@ public class UserController {
 //        return "itheima";
 //    }
 
-    @PostMapping("/login")
-    public R<LoginRespVo> login(@RequestBody LoginReqVo vo){
-
-        return userService.login(vo);
-    }
+//    @PostMapping("/login")
+//    public R<LoginRespVo> login(@RequestBody LoginReqVo vo){
+//
+//        return userService.login(vo);
+//    }
 
     /**
      * 生成登录校验码

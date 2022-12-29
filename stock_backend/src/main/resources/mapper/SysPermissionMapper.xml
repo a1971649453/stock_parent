@@ -30,14 +30,14 @@
         create_time,update_time,deleted
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_permission
         where  id = #{id,jdbcType=VARCHAR} 
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from sys_permission
         where  id = #{id,jdbcType=VARCHAR} 
     </delete>
@@ -68,29 +68,29 @@
                 <if test="method != null">method,</if>
                 <if test="name != null">name,</if>
                 <if test="pid != null">pid,</if>
-                <if test="orderNum != null">order_num,</if>
+                <if test="orderNum != null">orderNum,</if>
                 <if test="type != null">type,</if>
                 <if test="status != null">status,</if>
-                <if test="createTime != null">create_time,</if>
-                <if test="updateTime != null">update_time,</if>
+                <if test="createTime != null">createTime,</if>
+                <if test="updateTime != null">updateTime,</if>
                 <if test="deleted != null">deleted,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id,jdbcType=VARCHAR},</if>
-                <if test="code != null">#{code,jdbcType=VARCHAR},</if>
-                <if test="title != null">#{title,jdbcType=VARCHAR},</if>
-                <if test="icon != null">#{icon,jdbcType=VARCHAR},</if>
-                <if test="perms != null">#{perms,jdbcType=VARCHAR},</if>
-                <if test="url != null">#{url,jdbcType=VARCHAR},</if>
-                <if test="method != null">#{method,jdbcType=VARCHAR},</if>
-                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
-                <if test="pid != null">#{pid,jdbcType=VARCHAR},</if>
-                <if test="orderNum != null">#{orderNum,jdbcType=INTEGER},</if>
-                <if test="type != null">#{type,jdbcType=TINYINT},</if>
-                <if test="status != null">#{status,jdbcType=TINYINT},</if>
-                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
-                <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
-                <if test="deleted != null">#{deleted,jdbcType=TINYINT},</if>
+                <if test="id != null">id = #{id,jdbcType=VARCHAR},</if>
+                <if test="code != null">code = #{code,jdbcType=VARCHAR},</if>
+                <if test="title != null">title = #{title,jdbcType=VARCHAR},</if>
+                <if test="icon != null">icon = #{icon,jdbcType=VARCHAR},</if>
+                <if test="perms != null">perms = #{perms,jdbcType=VARCHAR},</if>
+                <if test="url != null">url = #{url,jdbcType=VARCHAR},</if>
+                <if test="method != null">method = #{method,jdbcType=VARCHAR},</if>
+                <if test="name != null">name = #{name,jdbcType=VARCHAR},</if>
+                <if test="pid != null">pid = #{pid,jdbcType=VARCHAR},</if>
+                <if test="orderNum != null">order_num = #{orderNum,jdbcType=INTEGER},</if>
+                <if test="type != null">type = #{type,jdbcType=TINYINT},</if>
+                <if test="status != null">status = #{status,jdbcType=TINYINT},</if>
+                <if test="createTime != null">create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="updateTime != null">update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+                <if test="deleted != null">deleted = #{deleted,jdbcType=TINYINT},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.itheima.stock.pojo.SysPermission">
@@ -160,4 +160,23 @@
             deleted =  #{deleted,jdbcType=TINYINT}
         where   id = #{id,jdbcType=VARCHAR} 
     </update>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_permission where deleted=1
+    </select>
+    <select id="findChildrenCountByParentId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM sys_permission WHERE pid=#{permissionId} AND deleted=1
+    </select>
+    <select id="getPermissionByUserId" resultMap="BaseResultMap">
+        SELECT
+           distinct  p.*
+        FROM
+            sys_role_permission AS rp,
+            sys_user_role AS ur,
+            sys_permission AS p
+        WHERE
+            ur.role_id = rp.role_id
+          AND rp.permission_id = p.id
+          AND ur.user_id = #{userId}
+    </select>
 </mapper>

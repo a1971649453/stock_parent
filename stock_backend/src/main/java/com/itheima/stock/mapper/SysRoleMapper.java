@@ -1,13 +1,15 @@
 package com.itheima.stock.mapper;
 
 import com.itheima.stock.pojo.SysRole;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
-* @author 寂笙
-* @description 针对表【sys_role(角色表)】的数据库操作Mapper
-* @createDate 2022-12-10 21:46:55
-* @Entity com.itheima.stock.pojo.SysRole
-*/
+ * @Entity com.itheima.stock.pojo.SysRole
+ */
+@Mapper
 public interface SysRoleMapper {
 
     int deleteByPrimaryKey(Long id);
@@ -22,4 +24,20 @@ public interface SysRoleMapper {
 
     int updateByPrimaryKey(SysRole record);
 
+    /**
+     * 查询所有角色信息
+     * @return
+     */
+    List<SysRole> findAll();
+
+    /**
+     * 根据用户id查询角色信息
+     * @param userId
+     * @return
+     */
+    List<SysRole> getRoleByUserId(@Param("userId") String userId);
 }
+
+
+
+

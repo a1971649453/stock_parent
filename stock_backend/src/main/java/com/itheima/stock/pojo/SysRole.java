@@ -2,13 +2,20 @@ package com.itheima.stock.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 角色表
  * @TableName sys_role
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SysRole implements Serializable {
     /**
      * 主键

@@ -1,8 +1,6 @@
 package com.itheima.stock.mapper;
 
-import com.itheima.stock.common.domain.Stock4EvrDayDomain;
-import com.itheima.stock.common.domain.Stock4MinuteDomain;
-import com.itheima.stock.common.domain.StockUpdownDomain;
+import com.itheima.stock.common.domain.*;
 import com.itheima.stock.pojo.StockRtInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -106,4 +104,36 @@ public interface StockRtInfoMapper {
      * @param stockRtInfo 股票详情集合
      */
     void insertBatch(@Param("stockRtInfos") List<StockRtInfo> stockRtInfo);
+
+    /**
+     * 根据股票编码模糊查询
+     * @param searchStr
+     * @return
+     */
+    List<Map> getSuggestStock(String searchStr);
+
+    /**
+     * 获取指定股票在指定日期下的数据
+     * @param code 股票编码
+     * @param closeDates 指定日期集合
+     * @return
+     */
+    List<Stock4EvrWeekDomain> getStockCreenWLineData(@Param("code") String code, @Param("closeDates") List<Date> closeDates);
+
+    /**
+     * 获取个股最新分时行情数据，主要包含：
+     * 开盘价、前收盘价、最新价、最高价、最低价、成交金额和成交量、交易时间信息
+     * @param code
+     * @param curDate
+     * @return
+     */
+    Stock4HourDetailsDomain getStockHourDetails(@Param("code") String code, @Param("curDate") Date curDate);
+
+    /**
+     * 获取最新10条交易流水
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return
+     */
+    List<Map> getStockNewFlow(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }

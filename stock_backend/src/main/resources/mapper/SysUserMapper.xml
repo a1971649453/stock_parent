@@ -5,7 +5,7 @@
 <mapper namespace="com.itheima.stock.mapper.SysUserMapper">
 
     <resultMap id="BaseResultMap" type="com.itheima.stock.pojo.SysUser">
-            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="phone" column="phone" jdbcType="VARCHAR"/>
@@ -34,18 +34,15 @@
         select
         <include refid="Base_Column_List" />
         from sys_user
-        where  id = #{id,jdbcType=VARCHAR} 
+        where  id = #{id,jdbcType=BIGINT} 
     </select>
-    <select id="findUserInfoByUserName" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from sys_user
-        where  username = #{username}
+    <select id="findUserByUserName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_user where username=#{username}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from sys_user
-        where  id = #{id,jdbcType=VARCHAR} 
+        where  id = #{id,jdbcType=BIGINT} 
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.itheima.stock.pojo.SysUser" useGeneratedKeys="true">
         insert into sys_user
@@ -55,7 +52,7 @@
         ,deleted,create_id,update_id
         ,create_where,create_time,update_time
         )
-        values (#{id,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}
+        values (#{id,jdbcType=BIGINT},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}
         ,#{phone,jdbcType=VARCHAR},#{realName,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR}
         ,#{email,jdbcType=VARCHAR},#{status,jdbcType=TINYINT},#{sex,jdbcType=TINYINT}
         ,#{deleted,jdbcType=TINYINT},#{createId,jdbcType=VARCHAR},#{updateId,jdbcType=VARCHAR}
@@ -69,34 +66,34 @@
                 <if test="username != null">username,</if>
                 <if test="password != null">password,</if>
                 <if test="phone != null">phone,</if>
-                <if test="realName != null">real_name,</if>
-                <if test="nickName != null">nick_name,</if>
+                <if test="realName != null">realName,</if>
+                <if test="nickName != null">nickName,</if>
                 <if test="email != null">email,</if>
                 <if test="status != null">status,</if>
                 <if test="sex != null">sex,</if>
                 <if test="deleted != null">deleted,</if>
-                <if test="createId != null">create_id,</if>
-                <if test="updateId != null">update_id,</if>
-                <if test="createWhere != null">create_where,</if>
-                <if test="createTime != null">create_time,</if>
-                <if test="updateTime != null">update_time,</if>
+                <if test="createId != null">createId,</if>
+                <if test="updateId != null">updateId,</if>
+                <if test="createWhere != null">createWhere,</if>
+                <if test="createTime != null">createTime,</if>
+                <if test="updateTime != null">updateTime,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id,jdbcType=VARCHAR},</if>
-                <if test="username != null">#{username,jdbcType=VARCHAR},</if>
-                <if test="password != null">#{password,jdbcType=VARCHAR},</if>
-                <if test="phone != null">#{phone,jdbcType=VARCHAR},</if>
-                <if test="realName != null">#{realName,jdbcType=VARCHAR},</if>
-                <if test="nickName != null">#{nickName,jdbcType=VARCHAR},</if>
-                <if test="email != null">#{email,jdbcType=VARCHAR},</if>
-                <if test="status != null">#{status,jdbcType=TINYINT},</if>
-                <if test="sex != null">#{sex,jdbcType=TINYINT},</if>
-                <if test="deleted != null">#{deleted,jdbcType=TINYINT},</if>
-                <if test="createId != null">#{createId,jdbcType=VARCHAR},</if>
-                <if test="updateId != null">#{updateId,jdbcType=VARCHAR},</if>
-                <if test="createWhere != null">#{createWhere,jdbcType=TINYINT},</if>
-                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
-                <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+                <if test="id != null">id = #{id,jdbcType=BIGINT},</if>
+                <if test="username != null">username = #{username,jdbcType=VARCHAR},</if>
+                <if test="password != null">password = #{password,jdbcType=VARCHAR},</if>
+                <if test="phone != null">phone = #{phone,jdbcType=VARCHAR},</if>
+                <if test="realName != null">real_name = #{realName,jdbcType=VARCHAR},</if>
+                <if test="nickName != null">nick_name = #{nickName,jdbcType=VARCHAR},</if>
+                <if test="email != null">email = #{email,jdbcType=VARCHAR},</if>
+                <if test="status != null">status = #{status,jdbcType=TINYINT},</if>
+                <if test="sex != null">sex = #{sex,jdbcType=TINYINT},</if>
+                <if test="deleted != null">deleted = #{deleted,jdbcType=TINYINT},</if>
+                <if test="createId != null">create_id = #{createId,jdbcType=VARCHAR},</if>
+                <if test="updateId != null">update_id = #{updateId,jdbcType=VARCHAR},</if>
+                <if test="createWhere != null">create_where = #{createWhere,jdbcType=TINYINT},</if>
+                <if test="createTime != null">create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="updateTime != null">update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.itheima.stock.pojo.SysUser">
@@ -145,7 +142,7 @@
                     update_time = #{updateTime,jdbcType=TIMESTAMP},
                 </if>
         </set>
-        where   id = #{id,jdbcType=VARCHAR} 
+        where   id = #{id,jdbcType=BIGINT} 
     </update>
     <update id="updateByPrimaryKey" parameterType="com.itheima.stock.pojo.SysUser">
         update sys_user
@@ -164,6 +161,6 @@
             create_where =  #{createWhere,jdbcType=TINYINT},
             create_time =  #{createTime,jdbcType=TIMESTAMP},
             update_time =  #{updateTime,jdbcType=TIMESTAMP}
-        where   id = #{id,jdbcType=VARCHAR} 
+        where   id = #{id,jdbcType=BIGINT} 
     </update>
 </mapper>

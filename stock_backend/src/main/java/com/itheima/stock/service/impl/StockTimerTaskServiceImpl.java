@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -63,6 +64,9 @@ public class StockTimerTaskServiceImpl implements StockTimerTaskService {
 
     @Resource
     private StockBlockRtInfoMapper stockBlockRtInfoMapper;
+
+    @Resource
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
     public void collectInnerMarketInfo() {
@@ -120,9 +124,10 @@ public class StockTimerTaskServiceImpl implements StockTimerTaskService {
                     .tradeVolume(tradeVol)
                     .curTime(curDateTime)
                     .tradeAccount(tradeAmount).build();
-            log.info("封装的对象信息:{}" , info.toString());
+//            log.info("封装的对象信息:{}" , info.toString());
             //收集封装的对象,方便批量插入
             list.add(info);
+            log.info("封装的对象信息:{}" , info);
         }
         //批量插入数据
         stockMarketIndexInfoMapper.insertBatch(list);
@@ -159,7 +164,20 @@ public class StockTimerTaskServiceImpl implements StockTimerTaskService {
         参数1 : 要分片的集合
         参数2 : 每个集合元素个数
          */
+//        Lists.partition(stockCodeList, 20).forEach(list -> {
+//            //3.为每一份动态拼接url地址,然后通过restTemplate发送请求
+//            //格式:http://hq.sinajs.cn/list=sh601003,sh601001,xxx,xxxxx
+//            String url = stockInfoConfig.getMarketUrl() + String.join(",", list);
+//            //发起请求
+//            String resultData = restTemplate.postForObject(url, entity, String.class);
+//            //4.解析数据,封装对象
+//            List stockRtInfo = parserStockInfoUtil.parser4StockOrMarketInfo(resultData, ParseType.ASHARE);
+//            log.info("当前解析的集合数据: {}",stockRtInfo);
+//            stockRtInfoMapper.insertBatch(stockRtInfo);
+//        });
         Lists.partition(stockCodeList, 20).forEach(list -> {
+            //加入线程池后 异步多线程处理数据采集提高了操作效率
+           threadPoolTaskExecutor.execute(()->{
             //3.为每一份动态拼接url地址,然后通过restTemplate发送请求
             //格式:http://hq.sinajs.cn/list=sh601003,sh601001,xxx,xxxxx
             String url = stockInfoConfig.getMarketUrl() + String.join(",", list);
@@ -169,6 +187,7 @@ public class StockTimerTaskServiceImpl implements StockTimerTaskService {
             List stockRtInfo = parserStockInfoUtil.parser4StockOrMarketInfo(resultData, ParseType.ASHARE);
             log.info("当前解析的集合数据: {}",stockRtInfo);
             stockRtInfoMapper.insertBatch(stockRtInfo);
+           });
         });
     }
 
@@ -184,9 +203,11 @@ public class StockTimerTaskServiceImpl implements StockTimerTaskService {
         //2.1使用正则表达式匹配数据 封装对象
         List<StockBlockRtInfo> blockRtInfoList = parserStockInfoUtil.parse4StockBlock(result);
         //3.批量插入数据
-        Lists.partition(blockRtInfoList, 20).forEach(list -> {
-            stockBlockRtInfoMapper.insertBatch(list);
-        });
 
+            Lists.partition(blockRtInfoList, 20).forEach(list -> {
+                threadPoolTaskExecutor.execute(()->{
+                stockBlockRtInfoMapper.insertBatch(list);
+            });
+        });
     }
 }

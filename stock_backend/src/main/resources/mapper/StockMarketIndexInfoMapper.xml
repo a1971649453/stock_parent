@@ -64,6 +64,22 @@
         GROUP BY smi.cur_time
         ORDER BY time ASC
     </select>
+    <select id="getNewOutMarketLimit" resultType="com.itheima.stock.common.domain.OutMarketDomain">
+        SELECT
+            cur_point AS curPoint,
+            DATE_FORMAT(cur_time,'%Y%m%d') AS curTime,
+            mark_name AS name,
+            current_price AS tradePrice,
+            updown_rate AS upDownRate
+        FROM `stock_market_index_info`
+        WHERE DATE_FORMAT(cur_time,'%Y%m%d') = DATE_FORMAT(#{lastDate},'%Y%m%d')
+        AND mark_Id IN
+            <foreach collection="outers" item="outId" separator="," close=")" open="(">
+                #{outId}
+            </foreach>
+        ORDER BY curPoint DESC
+            LIMIT 4
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from stock_market_index_info

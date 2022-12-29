@@ -1,25 +1,50 @@
 package com.itheima.stock.mapper;
 
 import com.itheima.stock.pojo.SysPermission;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
-* @author 寂笙
-* @description 针对表【sys_permission(权限表（菜单）)】的数据库操作Mapper
-* @createDate 2022-12-10 21:46:55
-* @Entity com.itheima.stock.pojo.SysPermission
-*/
+ * @Entity com.itheima.stock.pojo.SysPermission
+ */
+@Mapper
 public interface SysPermissionMapper {
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(SysPermission record);
 
     int insertSelective(SysPermission record);
 
-    SysPermission selectByPrimaryKey(Long id);
+    SysPermission selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(SysPermission record);
 
     int updateByPrimaryKey(SysPermission record);
 
+    /**
+     * 获取所有权限集合
+     * @return
+     */
+    List<SysPermission> findAll();
+
+    /**
+     * 根据权限父类id查询对应子集权限
+     * @param permissionId
+     * @return
+     */
+    int findChildrenCountByParentId(@Param("permissionId") String permissionId);
+
+    /**
+     * 根据用户id查询用户信息
+     * @param userId
+     * @return
+     */
+    List<SysPermission> getPermissionByUserId(@Param("userId") String userId);
 }
+
+
+
+

@@ -1,13 +1,16 @@
 package com.itheima.stock.mapper;
 
 import com.itheima.stock.pojo.SysRolePermission;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 /**
-* @author 寂笙
-* @description 针对表【sys_role_permission(角色权限表)】的数据库操作Mapper
-* @createDate 2022-12-10 21:46:55
-* @Entity com.itheima.stock.pojo.SysRolePermission
-*/
+ * @Entity com.itheima.stock.pojo.SysRolePermission
+ */
+@Mapper
 public interface SysRolePermissionMapper {
 
     int deleteByPrimaryKey(Long id);
@@ -22,4 +25,35 @@ public interface SysRolePermissionMapper {
 
     int updateByPrimaryKey(SysRolePermission record);
 
+    /**
+     * 批量添加用户角色集合
+     * @param rps
+     * @return
+     */
+    int addRolePermissionBatch(@Param("rps") List<SysRolePermission> rps);
+
+    /**
+     * 根据角色id查询对应的权限id集合
+     * @param roleId 角色id
+     * @return
+     */
+    Set<String> getPermissionIdsByRoleId(@Param("roleId") Long roleId);
+
+    /**
+     * 根据角色id删除关联的权限信息
+     * @param id 角色id
+     * @return
+     */
+    int deleteByRoleId(@Param("roleId") String id);
+
+    /**
+     * 根据权限id删除关联的角色信息
+     * @param permissionId
+     * @return
+     */
+    int deleteByPermissionId(@Param("permissionId") String permissionId);
 }
+
+
+
+

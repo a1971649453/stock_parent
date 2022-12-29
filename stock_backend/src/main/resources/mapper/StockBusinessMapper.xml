@@ -32,6 +32,15 @@
     <select id="getAllStockCode" resultType="java.lang.String">
         select sec_code from stock_business
     </select>
+    <select id="getStockDescription" resultType="com.itheima.stock.common.domain.Stock4DescriptionDomain">
+        SELECT
+            sec_code AS code,
+            sector_name AS trade,
+            business,
+            sec_name as name
+        FROM `stock_business`
+        WHERE sec_code = #{code}
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from stock_business

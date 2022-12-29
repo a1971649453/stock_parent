@@ -1,5 +1,6 @@
 package com.itheima.stock.mapper;
 
+import com.itheima.stock.common.domain.Stock4DescriptionDomain;
 import com.itheima.stock.pojo.StockBusiness;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,9 +29,7 @@ public interface StockBusinessMapper {
 
     List<StockBusiness> findAll();
 
-    /**
-     * 获取所有股票的编码
-     * @return
-     */
     List<String> getAllStockCode();
+
+    Stock4DescriptionDomain getStockDescription(String code);
 }

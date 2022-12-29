@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author 金宗文
  * @version 1.0
@@ -32,4 +34,15 @@ public class LoginRespVo {
      */
     private String nickName;
 
+    /**
+     * 菜单树
+     */
+    private List<PermissionRespNodeVo> menus;
+
+    private List<String> permissions;
+
+    /**
+     * 认证成功后响应的jwtToken
+     */
+    private String accessToken;
 }

@@ -2,13 +2,22 @@ package com.itheima.stock.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 权限表（菜单）
  * @TableName sys_permission
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Accessors(chain = true)
 public class SysPermission implements Serializable {
     /**
      * 主键
@@ -26,7 +35,7 @@ public class SysPermission implements Serializable {
     private String title;
 
     /**
-     * 菜单图标
+     * 菜单图标(侧边导航栏图标)
      */
     private String icon;
 

@@ -199,6 +199,52 @@
             #{date}
         </foreach>
     </select>
+    <select id="getSuggestStock" resultType="java.util.Map">
+        SELECT stock_code AS code,
+               stock_name AS name
+        FROM `stock_rt_info`
+        WHERE stock_code LIKE '%${searchStr}%'
+            LIMIT 10
+    </select>
+    <select id="getStockCreenWLineData" resultType="com.itheima.stock.common.domain.Stock4EvrWeekDomain">
+        select
+        AVG(sri2.cur_price) AS avgPrice,
+        MIN(sri2.cur_price) as minPrice,
+        MAX(sri2.cur_price) AS maxPrice,
+        sri2.open_price AS openPrice,
+        sri2.cur_price AS closePrice,
+        MAX(sri2.cur_time) AS mxTime,
+        sri2.stock_code as stock_code
+        from stock_rt_info as sri2
+        where sri2.stock_code=#{code} and sri2.cur_time in
+        <foreach collection="closeDates" item="date" open="(" close=")" separator=",">
+            #{date}
+        </foreach>
+    </select>
+    <select id="getStockHourDetails" resultType="com.itheima.stock.common.domain.Stock4HourDetailsDomain">
+        SELECT
+            sri.trade_amount AS tradeAmt,
+            sri.pre_close_price AS preClosePrice,
+            sri.min_price AS lowPrice,
+            sri.max_price AS highPrice,
+            sri.trade_volume AS tradeVol,
+            sri.cur_price AS tradePrice,
+            sri.open_price AS openPrice,
+            DATE_FORMAT(sri.cur_time,'%Y%m%d%H%i') AS curDate
+        FROM `stock_rt_info` AS sri
+        WHERE sri.stock_code = #{code} AND DATE_FORMAT(sri.cur_time,'%Y%m%d%H%i') = DATE_FORMAT(#{curDate},'%Y%m%d%H%i')
+    </select>
+    <select id="getStockNewFlow" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT(sri.cur_time ,'%Y%m%d%H%i') as date,
+            trade_amount AS tradeAmt,
+            trade_volume AS tradeVol,
+            sri.cur_price AS tradePrice
+        FROM `stock_rt_info` AS sri
+        WHERE sri.cur_time between #{startTime} and #{endTime}
+        ORDER BY sri.cur_time DESC
+            LIMIT 10
+    </select>
 
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
